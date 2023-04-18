@@ -1,20 +1,25 @@
-import React from 'react';
+import React, { useState } from 'react';
 import TodoList from './Components/TodoList';
 import NewTodo from './Components/NewTodo';
+import { Todo } from './Models/Todo';
+import "semantic-ui-css/semantic.min.css";
+import "./App.css";
 
 const App: React.FC = () => {
+  const [todos, setTodos] = useState<Todo[]>([]);
   const addTodo = (text: string): void => {
-    console.log(text);
+    setTodos((prevTodo) => [...prevTodo, {id: Math.random().toString(), text: text}]);
   }
-  const todos = [
-    {id: "1", text: "Complete course of Typescript"},
-    {id: "2", text: "Complete evaluations"}
-  ]  
+  const deleteTodo = (id: string): void => {
+    setTodos((prevTodo) => {
+      return prevTodo.filter(e => e.id !== id)
+    });
+  }
 
   return (
     <div className = 'App'>
-      <NewTodo onAddTodo = {addTodo}/>
-      <TodoList items = {todos}/>
+      <NewTodo onAddTodo = {addTodo} />
+      <TodoList items = {todos} onDeleteTodo = {deleteTodo}/>
     </div>
   )
 }
